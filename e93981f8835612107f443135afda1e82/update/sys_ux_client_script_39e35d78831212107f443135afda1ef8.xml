@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>CreateSkillHandler</name>
+        <preset/>
+        <required_translations>[]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    const payload = {
+        "isConfigSkill": true,
+        "skill_config": {},
+        "capability": {
+            "capability_definitions": []
+        }
+    };
+    const skillName = api.state.skillName;
+    const skillDescription = api.state.skillDescription;
+    const selectedProvider = api.state.selectedProvider;
+    const selectedProviderApi = api.state.selectedProviderApi;
+    const modelConfigsMap = selectedProviderApi.model_configs_map || [];
+    const model = (modelConfigsMap.length > 0 ? (modelConfigsMap[0] || {}) : {})["model"] || "";
+    const prompt = {
+        "name": "Prompt name",
+        "model": model,
+        "definitionTable": "sys_one_extend_capability_definition",
+        "prompt": "",
+        "active": false,
+        "state": "draft",
+        "parent": "",
+        "version": "1",
+         "temperature": "0.2",
+        "maxTokens": selectedProvider && selectedProvider.id && selectedProvider.id.includes("Now LLM") ? "1000" : ""
+    };
+
+    if (skillName !== null) {
+        payload.skill_config["name"] = skillName;
+    }
+    if (skillName !== null && skillDescription !== null) {
+        payload.capability["name"] = skillName;
+        payload.capability["description"] = skillDescription;
+        payload.capability["external"] = true;
+    }
+    if (skillName && selectedProvider.id && selectedProvider.label) {
+        payload.capability.capability_definitions.push({
+            name: skillName,
+            provider: selectedProvider.label,
+            provider_api: selectedProviderApi.provider_api,
+            provider_api_id: selectedProviderApi.provider_api_id,
+            apiType: selectedProviderApi.provider_implementation_document,
+            api: selectedProviderApi.provider_implementation,
+            default: true,
+            prompts: [prompt],
+            truncate_strategy: api.state.truncate_strategy
+        }); 
+    };
+
+    api.data.create_skill.execute({
+        payload: JSON.stringify(payload)
+    });
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:07</sys_created_on>
+        <sys_id>39e35d78831212107f443135afda1ef8</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>CreateSkillHandler</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_39e35d78831212107f443135afda1ef8</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:07</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

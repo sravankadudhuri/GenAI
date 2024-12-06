@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>fetch platform skills Handler</name>
+        <preset/>
+        <required_translations>[]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    if (event.elementId === "fetch_platform_skills" && event.name === "DATA_OP_SUCCEEDED") {
+         if(!event.payload.data.output.datapresent){
+              api.setState('loadPlatformSKills', true);
+               api.setState('platformSkillsError', false);
+            return;
+        } else {
+        if (event.payload.data.output.rows) {
+            api.setState('platformRows', {
+                'rows': event.payload.data.output.rows
+            });
+            const getPlatformSkillsInput = api.state.getPlatformSkillsInput;
+            const pageNumber = ((getPlatformSkillsInput || {}).page_condition || {}).offset;
+            const recordsPerPage = ((getPlatformSkillsInput || {}).page_condition || {}).records_per_page;
+            const startIndex = pageNumber * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+
+             const columnKey = "Last modified";
+            const order = "order";
+
+
+           var filteredRows = {
+        rows: (event.payload.data.output.rows || []).sort((a, b) => {
+            const aValue = a.cells[columnKey] && a.cells[columnKey].value ? a.cells[columnKey].value.toLowerCase() : '';
+            const bValue = b.cells[columnKey] && b.cells[columnKey].value ? b.cells[columnKey].value.toLowerCase() : '';
+
+            if (aValue < bValue) {
+                return order === 'ascending' ? -1 : 1;
+            }
+            if (aValue > bValue) {
+                return order === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        })
+    };
+      const finalRows = filteredRows.rows.slice(startIndex, endIndex);
+            api.setState('platformFilteredRows', {
+                'rows': finalRows
+            });
+            api.setState('platformTotalRows', event.payload.data.output.rows.length);
+
+        }
+        if (event.payload.data.output.columns) {
+            var column = event.payload.data.output.columns.columns.find(col => col.label === "Last Updated");
+            if (column) {
+                column.icons.endIcons[0].value = 'caret-down-fill';
+            }
+
+            api.setState('platformColumns', event.payload.data.output.columns);
+        }
+    }
+    }
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:08</sys_created_on>
+        <sys_id>3de39d78831212107f443135afda1e21</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>fetch platform skills Handler</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_3de39d78831212107f443135afda1e21</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:08</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

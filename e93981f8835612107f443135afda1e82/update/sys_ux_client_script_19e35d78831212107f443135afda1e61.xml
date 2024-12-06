@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>prompt_name_input/messages</name>
+        <preset/>
+        <required_translations>[
+    {
+        "message": "This is a required field"
+    },
+    {
+        "message": "This skill name already exists. Enter a unique skill name."
+    },
+    {
+        "message": "Enter a valid Name."
+    }
+]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {TransformApiHelpers} params.helpers
+ */
+function evaluateProperty({
+    api,
+    helpers
+}) {
+    const nameValidation = api.state.validations.nameValidation;
+    const nameRegex = new RegExp(nameValidation);
+    if (api.state.skillName === "") {
+        return [{
+            status: 'critical',
+            content: helpers.translateSync("This is a required field"),
+            icon: "exclamation-triangle-outline",
+        }];
+    }
+    if (api.state.skillNameExists) {
+        return [{
+            status: 'critical',
+            content: helpers.translateSync("This skill name already exists. Enter a unique skill name."),
+            icon: "exclamation-triangle-outline",
+        }];
+
+    } else if (!nameRegex.test(api.state.skillName)) {
+        return [{
+            status: 'critical',
+            content: helpers.translateSync("Enter a valid Name."),
+            icon: "exclamation-triangle-outline",
+        }];
+
+    }
+    return [];
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:06</sys_created_on>
+        <sys_id>19e35d78831212107f443135afda1e61</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>prompt_name_input/messages</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_19e35d78831212107f443135afda1e61</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:06</sys_updated_on>
+        <target>macroponent</target>
+        <type>transform</type>
+    </sys_ux_client_script>
+</record_update>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_one_extend_definition_attribute">
+    <sys_one_extend_definition_attribute action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <apply_filter>false</apply_filter>
+        <attribute_label/>
+        <capability display_value="LLM Search">82c5957c831212107f443135afda1e8c</capability>
+        <choice_list/>
+        <contains_large_input>false</contains_large_input>
+        <data_type>string</data_type>
+        <default_value>GPT, or a generative pre-trained transformer, is a type of large language model (LLM) that utilizes deep learning to produce human-like text. Neural networks are trained on massive datasets containing text and code, enabling them to understand and generate coherent and contextually relevant responses. As a key component in the field of generative AI, GPT pushes the boundaries of what's possible with AI, enabling machines to produce creative and human-quality content.</default_value>
+        <definition/>
+        <description>Relevant content for a given query. This is provided by AI Search</description>
+        <hidden>false</hidden>
+        <label>Context</label>
+        <mandatory>true</mandatory>
+        <name>context</name>
+        <order>100</order>
+        <schema/>
+        <sys_class_name>sys_one_extend_definition_attribute</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-03 11:12:03</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c726957c831212107f443135afda1ee6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>context</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_one_extend_definition_attribute_c726957c831212107f443135afda1ee6</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:12:03</sys_updated_on>
+        <translate>false</translate>
+        <truncate>false</truncate>
+        <type>input</type>
+    </sys_one_extend_definition_attribute>
+    <sys_translated_text action="delete_multiple" query="documentkey=c726957c831212107f443135afda1ee6"/>
+</record_update>

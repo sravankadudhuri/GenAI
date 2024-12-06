@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="m2m_sp_dependency_js_include">
+    <m2m_sp_dependency_js_include action="INSERT_OR_UPDATE">
+        <order>100</order>
+        <sp_dependency display_value="ShowdownJS">e33e9381831e12107f443135afda1ecd</sp_dependency>
+        <sp_js_include display_value="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js">0e4ed381831e12107f443135afda1e80</sp_js_include>
+        <sys_class_name>m2m_sp_dependency_js_include</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-04 15:45:39</sys_created_on>
+        <sys_id>3c6e9781831e12107f443135afda1e02</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ShowdownJS.https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>m2m_sp_dependency_js_include_3c6e9781831e12107f443135afda1e02</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-04 15:45:39</sys_updated_on>
+    </m2m_sp_dependency_js_include>
+</record_update>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="one_api_feature_provider">
+    <one_api_feature_provider action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <feature display_value="2547a1b4839212107f443135afda1e45">2f77e5b4839212107f443135afda1eb9</feature>
+        <feature_service display_value="OneExtendGenericProvider">5233278353111110c271ddeeff7b129b</feature_service>
+        <feature_service_factory><![CDATA[(function() { return new global.OneExtendGenericProvider(); })()]]></feature_service_factory>
+        <name>Gemini LLM Search provider</name>
+        <short_description>Auto Generated </short_description>
+        <sys_class_name>one_api_feature_provider</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-03 12:27:43</sys_created_on>
+        <sys_id>6777e5b4839212107f443135afda1ebc</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Gemini LLM Search provider</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>one_api_feature_provider_6777e5b4839212107f443135afda1ebc</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-03 12:27:43</sys_updated_on>
+        <type>FDIH Subflow</type>
+        <type_document display_value="Custom LLM">af9702d0c3110210b0939bc8a840dd2c</type_document>
+    </one_api_feature_provider>
+</record_update>

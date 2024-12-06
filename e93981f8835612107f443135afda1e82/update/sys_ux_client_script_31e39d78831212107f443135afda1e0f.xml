@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>providersdataHandler</name>
+        <preset/>
+        <required_translations>[]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    if (event.elementId === "get_providers_data" && event.name === "DATA_OP_SUCCEEDED") {
+        const providersData = event.payload.data.output.providersData;
+        const selectedProvider = {
+            "id": "Now LLM Generic",
+            "label": "Now LLM Generic"
+        };
+
+        api.setState('providersData', providersData);
+        api.setState('selectedProvider', selectedProvider);
+        api.setState('platformSelectedProvider', selectedProvider);
+        console.log('providerData', providersData);
+        if (providersData && selectedProvider && providersData.length > 0) {
+            const provider = providersData.find(provider => provider.id === selectedProvider.id);
+            const providerAPI = provider.providerAPI;
+            if (providerAPI && Array.isArray(providerAPI) && providerAPI.length == 1 && providerAPI[0]) {
+                const selectedProviderAPI = {
+                    provider_api_id: providerAPI[0].id,
+                    provider_api: providerAPI[0].label,
+                    provider_implementation: providerAPI[0].providerImplementation,
+                    provider_implementation_document: providerAPI[0].providerImplementationDocument,
+                    model_config_display_names: providerAPI[0].modelConfigDisplayNames,
+                    model_configs_map: providerAPI[0].modelConfigsMap
+                };
+                api.setState('selectedProviderApi', selectedProviderAPI);
+                api.setState('platformSelectedProviderApi', selectedProviderAPI);
+            }
+        }
+    }
+
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:08</sys_created_on>
+        <sys_id>31e39d78831212107f443135afda1e0f</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>providersdataHandler</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_31e39d78831212107f443135afda1e0f</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:08</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

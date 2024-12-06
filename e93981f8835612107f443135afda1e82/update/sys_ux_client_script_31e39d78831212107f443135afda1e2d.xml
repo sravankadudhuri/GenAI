@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>CreateSkillResponseHandler</name>
+        <preset/>
+        <required_translations>[]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+     if(event.elementId === "create_skill" && event.name === "DATA_OP_SUCCEEDED"){
+        if(event.payload.data.output.capabilityId === "" && event.payload.data.output.skillConfigId === "" && event.payload.data.output.skillNameExists){
+            api.setState('skillNameExists', event.payload.data.output.skillNameExists);
+
+        }
+        if(event.payload.data.output.capabilityId && event.payload.data.output.skillConfigId && !event.payload.data.output.skillNameExists){
+            api.setState('capabilityId', event.payload.data.output.capabilityId);
+            helpers.navigate.to('skill', {skillId: event.payload.data.output.capabilityId}, { promptId: 'prompt1', configId: event.payload.data.output.skillConfigId, newSkill: true});
+            helpers.modal.close('create_prompt_modal');
+            return;
+        }
+        if(event.payload.data.output.capabilityId && !event.payload.data.output.skillNameExists){
+            helpers.navigate.to('skill', {skillId: event.payload.data.output.capabilityId},  {promptId: 'prompt1', newSkill: true});
+            helpers.modal.close('create_platform_skill_modal');
+        }
+    }
+}]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:08</sys_created_on>
+        <sys_id>31e39d78831212107f443135afda1e2d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>CreateSkillResponseHandler</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_31e39d78831212107f443135afda1e2d</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:08</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_generative_ai_config">
+    <sys_generative_ai_config action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <additional_configurations>{}</additional_configurations>
+        <definition>06c5957c831212107f443135afda1e96</definition>
+        <definition_table>sys_one_extend_capability_definition</definition_table>
+        <max_tokens>1000</max_tokens>
+        <min_word_count>-1</min_word_count>
+        <model>llm_generic</model>
+        <name>LLM Search</name>
+        <parent display_value="OneExtend Capability Definition: LLM Search">78c8fe89831a12107f443135afda1eaa</parent>
+        <prompt>Given a Query(Q) and Context(C). Return the most relevant answer from the given context by following the below mentioned instructions.
+- return only the concise answer `strictly in Valid markdown syntax` and `do not prepend any phrases`
+- use the `appropriate styling like headings, bold font etc wherever applicable`
+- avoid jargons and generate the answer with a professional tone and easy to understand
+- also `include the links from the context if present and use emojis wherever applicable`
+
+Q:{{query}}
+C:{{context}}</prompt>
+        <prompt_template_role>user</prompt_template_role>
+        <request_tokens>6942</request_tokens>
+        <state>published</state>
+        <sys_class_name>sys_generative_ai_config</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-04 13:58:26</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c6d54785835a12107f443135afda1e47</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>06c5957c831212107f443135afda1e96</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_generative_ai_config_c6d54785835a12107f443135afda1e47</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-04 14:40:33</sys_updated_on>
+        <temperature>0.2</temperature>
+        <version>2</version>
+    </sys_generative_ai_config>
+</record_update>

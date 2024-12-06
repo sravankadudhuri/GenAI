@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_client_script">
+    <sys_ux_client_script action="INSERT_OR_UPDATE">
+        <controller_preset/>
+        <includes/>
+        <macroponent display_value="Custom Skill Kit">8ce35138831212107f443135afda1e9b</macroponent>
+        <name>platform Skills Functionality Handler</name>
+        <preset/>
+        <required_translations>[]</required_translations>
+        <script><![CDATA[/**
+ * @param {params} params
+ * @param {api} params.api
+ * @param {any} params.event
+ * @param {any} params.imports
+ * @param {ApiHelpers} params.helpers
+ */
+function handler({
+    api,
+    event,
+    helpers,
+    imports
+}) {
+    var rows = api.state.platformRows;
+    var columns = api.state.platformColumns;
+    var filteredRows = api.state.platformRows;
+    const getSkillsInput = api.state.getPlatformSkillsInput;
+    const recordsPerPage = getSkillsInput.page_condition.records_per_page;
+    const pageNumber = getSkillsInput.page_condition.page_number;
+    var searchText = api.state.platformSearchString;
+    const order = getSkillsInput.order_condition.direction;
+    const columnKey = getSkillsInput.order_condition.attribute;
+
+    if (searchText != "") {
+        searchText = searchText.toLowerCase();
+        var exclude = false;
+
+        if (searchText.startsWith('!')) {
+            exclude = true;
+            searchText = searchText.substring(1);
+        }
+
+        filteredRows = {
+            rows: rows.rows.filter(row => {
+                for (var cellKey in row.cells) {
+                    if (row.cells.hasOwnProperty(cellKey)) {
+                        const cellValue = row.cells[cellKey] && row.cells[cellKey].value && row.cells[cellKey].value.toLowerCase();
+                        if (cellValue) {
+                            if (exclude) {
+                                if (cellValue.includes(searchText)) {
+                                    return false;
+                                }
+                            } else {
+                                if (cellValue.includes(searchText)) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                return exclude;
+            })
+        };
+    }
+
+    if (order && columnKey && order != null && columnKey != null) {
+        filteredRows = {
+        rows: (filteredRows.rows || []).sort((a, b) => {
+            const aValue = a.cells[columnKey] && a.cells[columnKey].value ? a.cells[columnKey].value.toLowerCase() : '';
+            const bValue = b.cells[columnKey] && b.cells[columnKey].value ? b.cells[columnKey].value.toLowerCase() : '';
+
+            if (aValue < bValue) {
+                return order === 'ascending' ? -1 : 1;
+            }
+            if (aValue > bValue) {
+                return order === 'ascending' ? 1 : -1;
+            }
+            return 0;
+        })
+    };
+    }
+
+        api.setState('platformTotalRows', filteredRows.rows.length);
+        const startIndex = pageNumber * recordsPerPage;
+        const endIndex = startIndex + recordsPerPage;
+        var finalRows = filteredRows.rows.filter((row, index) => index >= startIndex && index < endIndex);
+
+        api.setState('platformFilteredRows', {
+            'rows': finalRows
+        });
+
+           if (columns && columns.columns) {
+            columns.columns.forEach(col => {
+                if (col.label === api.state.orderedHeader) {
+                    if (order === 'descending') {
+                        col.icons.endIcons[0].value = 'caret-down-fill';
+                    } else {
+                        col.icons.endIcons[0].value = 'caret-up-fill';
+                    }
+                } else {
+                    if (col.icons && col.icons.endIcons && col.icons.endIcons[0]) {
+                        col.icons.endIcons[0].value = '';
+                    }
+                }
+            });
+            api.setState('platformColumns', columns);
+        }
+    }]]></script>
+        <script_api_version>2.0.0</script_api_version>
+        <sys_class_name>sys_ux_client_script</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:07</sys_created_on>
+        <sys_id>69e35d78831212107f443135afda1ed5</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>platform Skills Functionality Handler</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_client_script_69e35d78831212107f443135afda1ed5</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:07</sys_updated_on>
+        <target>macroponent</target>
+        <type>default</type>
+    </sys_ux_client_script>
+</record_update>

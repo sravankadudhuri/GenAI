@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ux_applicability_m2m_screen">
+    <sys_ux_applicability_m2m_screen action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applicability display_value="Now Assist Skill Kit">6eb9aa5e9f7202107c0e2305fa0a1cb7</applicability>
+        <order>0</order>
+        <screen display_value="Custom Skill Kit">a6e39d78831212107f443135afda1e69</screen>
+        <sys_class_name>sys_ux_applicability_m2m_screen</sys_class_name>
+        <sys_created_by>aislab.admin</sys_created_by>
+        <sys_created_on>2024-12-03 11:02:12</sys_created_on>
+        <sys_id>3ae39d78831212107f443135afda1e6e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name/>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_ux_applicability_m2m_screen_3ae39d78831212107f443135afda1e6e</sys_update_name>
+        <sys_updated_by>aislab.admin</sys_updated_by>
+        <sys_updated_on>2024-12-03 11:02:12</sys_updated_on>
+    </sys_ux_applicability_m2m_screen>
+</record_update>
