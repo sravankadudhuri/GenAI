@@ -1,76 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sp_widget">
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
-        <client_script><![CDATA[api.controller=function(spUtil, $http) {
+        <client_script><![CDATA[api.controller = function (spUtil, $http) {
 	/* widget controller */
 	var c = this;
 	c.html = "";
 	c.query = "";
-	
-	
+	c.timeTaken = 0;
+	c.startTime = "";
+
 	var converter = new showdown.Converter();
 	//c.html = converter.makeHtml(md);
-  
+
 
 
 	c.llmSearch = (query) => {
-		
-		var config = [{
-		definitionSysId: '0cac8b3073ad101052c7d5fdbdf6a78a',
-		type: 'GRAPHQL',
-		inputValues: {
-			searchContextConfigId: {
-				type: 'JSON_LITERAL',
-				value: "7296910f53171010069addeeff7b12e7"
-			},
-			searchTerm: {
-				type: 'JSON_LITERAL',
-				value: query
-			},
-			searchEvamConfigId: {
-				type: 'JSON_LITERAL',
-				value: "9264a1c353571010069addeeff7b121e"
-			},
-			facetFilters: {
-				type: 'JSON_LITERAL',
-				value: null
-			},
-			searchFilters: {
-				type: 'JSON_LITERAL',
-				value: []
-			},
-			disableSpellCheck: {
-				type: 'JSON_LITERAL',
-				value: 'false'
-			},
-			paginationToken: {
-				type: 'JSON_LITERAL',
-				value: null
-			},
-			sortOptions: {
-				type: 'JSON_LITERAL',
-				value: []
-			},
-			asyncParams: {
-				type: 'JSON_LITERAL',
-				value: '{asyncMode: \"GR_ONLY\", callbackType: \"AMB\"}'
+
+		// Check for answer in L1 cache.
+		c.startTime = new Date();
+		c.server.get({ action: "ansInL1", query: query }).then(function (answer) {
+
+			if (answer.data.ans == "" || answer.data.ans == null) {
+
+				// RAG via Ai Search
+				var config = [{
+					definitionSysId: '0cac8b3073ad101052c7d5fdbdf6a78a',
+					type: 'GRAPHQL',
+					inputValues: {
+						searchContextConfigId: {
+							type: 'JSON_LITERAL',
+							value: "7296910f53171010069addeeff7b12e7"
+						},
+						searchTerm: {
+							type: 'JSON_LITERAL',
+							value: query
+						},
+						searchEvamConfigId: {
+							type: 'JSON_LITERAL',
+							value: "9264a1c353571010069addeeff7b121e"
+						},
+						facetFilters: {
+							type: 'JSON_LITERAL',
+							value: null
+						},
+						searchFilters: {
+							type: 'JSON_LITERAL',
+							value: []
+						},
+						disableSpellCheck: {
+							type: 'JSON_LITERAL',
+							value: 'false'
+						},
+						paginationToken: {
+							type: 'JSON_LITERAL',
+							value: null
+						},
+						sortOptions: {
+							type: 'JSON_LITERAL',
+							value: []
+						},
+						asyncParams: {
+							type: 'JSON_LITERAL',
+							value: '{asyncMode: \"GR_ONLY\", callbackType: \"AMB\"}'
+						}
+					}
+				}];
+
+				var url = spUtil.getHost() + '/api/now/uxf/databroker/exec';
+
+				$http.post(url, config).then(function (response) {
+
+					// Process AIS response
+					c.items = response.data.result[0].executionResult.searchResultsTemplates.items;
+					c.kbList = c.items.map(item => (item.propValues.model.table == "kb_knowledge" ? item.propValues.model.number : ""));
+					c.kbList = c.kbList.filter(item => item != "");
+
+					// Generate Context from KB article body
+					c.server.get({ action: "getContext", kbNums: c.kbList }).then(function (resp) {
+
+
+						c.context = resp.data.context;
+
+						// call Now LLM
+						c.server.get({ action: "llmSearch", query: query, context: c.context }).then(function (res) {
+
+							// Parse Now LLM answer
+							var ans = document.getElementById("answer");
+							c.html = converter.makeHtml(res.data.ans);
+							ans.innerHTML = c.html;
+							c.timeTaken = (new Date() - c.startTime) / 1000 + "s";
+
+						});
+
+					});
+
+
+
+				});
+
 			}
-		}
-	}];
-	
-		var url = spUtil.getHost() + '/api/now/uxf/databroker/exec';
+			else {
+				var ans = document.getElementById("answer");
+				c.html = converter.makeHtml(answer.data.ans);
+				ans.innerHTML = c.html;
+				c.timeTaken = (new Date() - c.startTime) / 1000 + "s";
+			}
 
-		$http.post(url, config).then(function(response) {
-			
-			c.results = response.data.result[0].executionResult;
-			
 		});
 
-		c.server.get({action: "llmSearch", query: query}).then(function(res){
-			var ans = document.getElementById("answer");
-			c.html = converter.makeHtml(res.data.ans);
-			ans.innerHTML = c.html;
-		});
+
+
 	}
 };]]></client_script>
         <controller_as>c</controller_as>
@@ -94,178 +133,36 @@
 
 
 	data.ans = "";
+	data.context = "";
+	
+	
+	if(input && input.action == "ansInL1"){
+		data.ans = sn_scoped_cache.ScopedCacheManager.get("svngenaicache",input.query)
+	}
+
+
+	if(input && input.action == "getContext"){
+		input.kbNums.forEach(function(kbNum){
+			var kbGr = new GlideRecord("kb_knowledge");
+			kbGr.addQuery("latest=true^workflow_state=published^sys_class_name=kb_knowledge^number="+kbNum);
+			kbGr.setLimit(2);
+			kbGr.query();
+
+			while(kbGr.next()){
+				data.context += kbGr.getValue("text");
+			}
+
+		});
+	}
+
+
+
 	if(input && input.action === "llmSearch"){
 
 		try {
 			var inputs = {};
 			inputs['query'] = input.query; // String 
-			inputs['context'] = `<ol id="content-well-in-this-article-list" style="list-style-type: none; list-style-position: inside;"><li style="list-style-type: none;"><a href="https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/working-with-llms/prompt-engineering#prompt-components" rel="nofollow">Prompt components</a></li><li style="list-style-type: none;"><a href="https://learn.microsoft.com/en-us/ai/playbook/technology-guidance/generative-ai/working-with-llms/prompt-engineering#challenges-and-limitations-of-prompt-engineering" rel="nofollow">Challenges and limitations of prompt engineering</a></li></ol>
-<p>Large Language Models (LLMs) have the ability to learn new tasks on the fly, without requiring any explicit training or parameter updates. This mode of using LLMs is called in-context learning. It relies on providing the model with a suitable input prompt that contains instructions and/or examples of the desired task. The input prompt serves as a form of conditioning that guides the model&#39;s output, but the model does not change its weights. In-context learning can be applied in different settings such as zero-shot, one shot, or few-shot learning. It depends on the amount of information that needs to be included in the input prompt.</p>
-<p><img style="height: auto;" src="https://learn.microsoft.com/en-us/ai/playbook/assets/images/in_context.png" alt="In-context learning" /></p>
-<p>The process of designing and tuning the natural language prompts for specific tasks, with the goal of improving the performance of LLMs is called prompt engineering.</p>
-<p>Effective prompt engineering can significantly improve the performance of LLMs on specific tasks. It is done by providing instructions and contextual information that help guide the model&#39;s output. By carefully designing prompts, researchers can steer the LLM&#39;s attention toward the most relevant information for a given task, leading to more accurate and reliable outputs.</p>
-<p>Prompt engineering can also help mitigate the problem of &#34;catastrophic forgetting,&#34; where an LLM may forget previously learned information during fine-tuning for a new task. By using carefully designed prompts, the model can retain relevant knowledge while still adapting to new tasks.</p>
-<div>
-<h2 id="prompt-components">Prompt components</h2>
-</div>
-<p>While it is considered a new field, rich literature is already available, including articles, blogs, research papers, repos, etc., about prompt engineering techniques.</p>
-<p>A common technique is to construct prompts from a well-defined set of components, as shown in the following diagram.</p>
-<p><img style="height: auto;" src="https://learn.microsoft.com/en-us/ai/playbook/assets/images/prompt_comp.png" alt="Prompt components" /></p>
-<div>
-<h3 id="instructions-and-other-static-context">Instructions and other static context</h3>
-</div>
-<p>Static context description refers to providing fixed information to the LLM. This information can include content and format instructions, database schema information, or any other contextual information that is relevant to the task. Here are some widely-used approaches that demonstrate using static context examples in prompt engineering:</p>
-<div>
-<h4 id="establish-conversational-or-functional-style-with-a-system-message">Establish conversational or functional style with a system message</h4>
-</div>
-<p>A system message can be used to inform the LLM about the context. The context may be the type of conversation it is engaging in, or the function it is supposed to perform. It helps the LLM generate more appropriate responses. For example, if the LLM is expected to perform a customer service function, the prompt could include a system message such as:</p>
-<div id="code-try-0">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>You are a friendly AI agent who can provide assistance to the customer regarding their recent order.
-</code></pre>
-<p>Similarly, if the LLM is engaging in a casual conversation, the prompt could include a message such as</p>
-<div id="code-try-1">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>Let&#39;s have a friendly chat about your favorite hobbies.
-</code></pre>
-<div>
-<h4 id="use-input-text-to-guide-completion-formatting">Use input text to guide completion formatting</h4>
-</div>
-<p>By formatting input text in a specific way, we can guide the LLMs towards generating more relevant responses. For example, if the LLM is trained to generate recipe instructions, the input text could be formatted as &#34;First, [action], then [action], and finally [action].&#34; This formatting guides the LLM towards generating instructions in a sequential manner. Similarly, if the LLM is trained to generate summaries of news articles, the input text could be formatted as &#34;The article talks about [topic]. It discusses [point 1], [point 2], and [point 3].&#34; This formatting guides the LLM towards generating a summary that covers the main points of the article. Here we can see the importance of using the correct comment character for the language that you want to generate.</p>
-<p><em>Prompt</em>: <code>/* Create a javascript dictionary with 5 cities and their location */</code> <em>Completion</em>:</p>
-<div id="code-try-2">JavaScript<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>  var cities &#61; {
-&#39;Los Angeles&#39;: [34.0522, -118.2437],
-&#39;New York&#39;: [40.7128, -74.0059],
-&#39;San Francisco&#39;: [37.7749, -122.4194],
-&#39;Chicago&#39;: [41.8781, -87.6298],
-&#39;Houston&#39;: [29.7604, -95.3698]
-};
-</code></pre>
-<p>In this case, we get a properly formatted JavaScript dictionary with the requested information. Now, if you change &#34;JavaScript&#34; to python and leave the comment characters the same you get: <em>Prompt</em>: <code>/* Create a python dictionary with 5 cities and their location */</code> <em>Completion</em>:</p>
-<div id="code-try-3">C&#43;<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>  PyObject *pDict &#61; PyDict_New();
-  PyDict_SetItemString(pDict, &#34;San Francisco&#34;, Py_BuildValue(&#34;(f,f)&#34;, 37.77493, -122.419416));
-  PyDict_SetItemString(pDict, &#34;New York&#34;, Py_BuildValue(&#34;(f,f)&#34;, 40.7127, -74.0059));
-  PyDict_SetItemString(pDict, &#34;London&#34;, Py_BuildValue(&#34;(f,f)&#34;, 51.507351, -0.127758));
-  PyDict_SetItemString(pDict, &#34;Paris&#34;, Py_BuildValue(&#34;(f,f)&#34;, 48.856614, 2.352222));
-  PyDict_SetItemString(pDict, &#34;Tokyo&#34;, Py_BuildValue(&#34;(f
-  f)&#34;, 35.689487, 139.691706));
-</code></pre>
-<p>Here we get C&#43;&#43; code making a python dictionary, because of the comment character being <code>/*</code> instead of <code>#</code>.</p>
-<div>
-<h3 id="add-supporting-information">Add supporting information</h3>
-</div>
-<p>Adding supporting information to the prompt can provide more context for the LLM, which can improve the accuracy of its responses. For example, if the prompt asks the LLM to generate a response to a specific question, providing additional information can help the LLM generate a more relevant response. A good example of this is:</p>
-<div id="code-try-4">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>Please explain transformer language model to a 15-year-old student.
-</code></pre>
-<p>Similarly, the LLM generates a more accurate and persuasive description when provided with additional information if asked to generate a product description. A good example is:</p>
-<div id="code-try-5">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>Write a witty product description in a conversational style so young adult shoppers understand
-what this product does and how it benefits them.
-
-Use the following product details to summarize your description:
-
-Title: {<!-- -->{shopify.title}}
-Type: {<!-- -->{shopify.type}}
-Vendor: {<!-- -->{shopify.vendor}}
-Tags: {<!-- -->{shopify.tags}}
-
-</code></pre>
-<div>
-<h3 id="task-specific-knowledge-enrichment">Task-specific knowledge enrichment</h3>
-</div>
-<p>Prompt engineering by task-specific knowledge enrichment involves retrieving relevant knowledge from a large corpus of text and incorporating that into the prompt to improve the performance of language models. This enrichment is also known as data augmented generation. One way to achieve this enrichment is through a knowledge retrieval strategy. This type of strategy involves chunking and indexing bulk knowledge context, followed by embedding similarity context selection. Here&#39;s how this approach works:</p>
-<ul style="list-style-type: none; list-style-position: inside;"><li style="list-style-type: disc;">
-<p>Importing knowledge data into a document store. Multiple data sources could be used to build the knowledge document store. For example, you could import the following data:</p>
-<ul style="list-style-type: none; list-style-position: inside;"><li style="list-style-type: circle;">
-<p>Car reviews from websites such as Edmunds and Consumer Reports</p>
-</li><li style="list-style-type: circle;">
-<p>Technical manuals in .pdf format from car manufacturers</p>
-</li><li style="list-style-type: circle;">
-<p>News articles from sources such as Reuters and CNN</p>
-<p>Each of these data sources would be represented as a separate document within the document store.</p>
-</li></ul>
-</li><li style="list-style-type: disc;">
-<p>Chunking the text into smaller, possibly overlapping and more manageable segments. The chunk can be implemented by a static size of token (for example, 1000). The chunk size is defined by considering token size limit of LLMs&#39; model inference. It can also be carried out using embedded titles, topics, or natural paragraph styles in the knowledge data.</p>
-</li><li style="list-style-type: disc;">
-<p>Embedding generation/indexing for efficient retrieval. The final step is to generate embeddings and index the segmented text for efficient retrieval. This generation involves representing each segment as a vector or a set of features that capture its key semantic attributes. For example, you could generate embeddings using a pretrained language model (like, BERT, text_embedding-ada-002) and save it as a vector store. Next, an index is created that maps each embedding to its corresponding document. This index allows you to quickly retrieve all the documents that contain relevant information based on their similarity to the query embedding.</p>
-</li><li style="list-style-type: disc;">
-<p>Retrieval of relevant context (for example, chunks). Once the knowledge base has been chunked and indexed, the next step is to select the most relevant pieces of information to incorporate into the prompt. One approach for doing that is by semantic search. Specifically, embeddings of the indexed knowledge segments are compared with the embeddings of the input prompt to identify the most similar pieces of information.</p>
-</li></ul>
-<p>This method of prompt engineering by task-specific knowledge enrichment can be highly effective in improving the accuracy and relevance of LLM responses. By incorporating relevant knowledge into the prompt, the LLM can generate more informed and accurate responses. These responses can enhance the user&#39;s experience and increase the effectiveness of the system. The following figure provides one example of task-specific knowledge enrichment architecture design.</p>
-<p><img style="height: auto;" src="https://learn.microsoft.com/en-us/ai/playbook/assets/images/context_retriev.png" alt="Context retrieval" /></p>
-<div>
-<h3 id="few-shot-examples">Few-shot examples</h3>
-</div>
-<p>Few-shot examples involve including a few input and output examples (input-output pairs) in the LLM to guide its completions in both content and format. The following example is a simple few-shot classification:</p>
-<div id="code-try-6">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>apple: fruit
-orange: fruit
-zucchini: vegetable
-</code></pre>
-<p>Now, if we want to know if a tomato is a fruit or vegetable, we include this few-shot example prior to input:</p>
-<div id="code-try-7">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>apple: fruit
-orange: fruit
-zucchini: vegetable
-tomato:
-
-Complete this list
-</code></pre>
-<p>To which the GPT-3.5 responds with &#34;tomato: fruit (botanically), vegetable (culinarily)&#34;.</p>
-<p>The previous example is a case of a static few shot example. No matter what object we are trying to classify, the same examples are used. However, there are cases where we may want to pick different few shot examples dynamically based on the input prompt. To do that, a library/bank of few-shot examples is created manually. Each example is represented in a feature space (for example, embeddings using a pretrained model). Then, when a new prompt is presented, the few-shot examples that are most similar in that feature space are selected to guide the language model. This method is useful when the following statements are true:</p>
-<ul style="list-style-type: none; list-style-position: inside;"><li style="list-style-type: disc;">The few-shot bank data is large and diverse</li><li style="list-style-type: disc;">The examples share a common underlying pattern</li></ul>
-<p>For example, if the few-shot bank data consists of various examples of restaurant reviews, embeddings can capture similarities in the language used to describe the quality of food, service, and atmosphere. The most similar examples can be used to optimize the language model inference.</p>
-<p>There are different techniques to improve/optimize the dynamic few-shot selection further. One approach is to filter or categorize the examples in the few-shot for faster retrieval of more relevant examples. To do that, the few-shot bank examples are labeled using intentions or tasks. A custom model can be trained to classify those examples (for example, sports, entertainment, politics, etc.). When a new prompt is presented, the classifier is used to predict the task or intention of the prompt. Then, the few-shot examples that are most relevant to the predicted task are selected to instruct the language model inference. The following figure illustrates the architecture design for dynamic few-shot example retrieval. This retrieval uses the embedding similarity or intention prediction classifier method.</p>
-<p><img style="height: auto;" src="https://learn.microsoft.com/en-us/ai/playbook/assets/images/few_shot.png" alt="Few-shot learning" /></p>
-<div>
-<h3 id="using-session-history">Using session history</h3>
-</div>
-<p>Prompt engineering using session history involves tracking the history of a conversation between the user and the language model. This method can help the language model generate more accurate responses by taking into account the context of the conversation. Here&#39;s an example of how LLMs track the history of conversation to help generate accurate responses:</p>
-<div id="code-try-8">text<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code>User: The capital of India?
-LLM: The capital of India is New Delhi.
-User: What is the population of this city?
-LLM: As of 2021, the estimated population of New Delhi is around 31.8 million people.
-</code></pre>
-<p>In this scenario, the LLM is able to use the history of the conversation to understand &#34;this city&#34; refers to &#34;New Delhi&#34;.</p>
-<p>Another example takes the following multi-turn NL2Code interaction where the user&#39;s requests follow the <code>#</code> comment character and the model&#39;s code follows.</p>
-<div id="code-try-9">Python<button type="button">Copy</button>
-<div> </div>
-</div>
-<pre><code># Add a cube named &#34;myCube&#34;
-cube(name&#61;&#34;myCube&#34;)
-
-# Move it up three units
-move(0, 5, 0, &#34;myCube&#34;)
-</code></pre>
-<p>For the second request (&#34;Move it up three units&#34;) the model is only able to get the correct completion because the previous interaction is included.</p>
-<p>One helpful trick for deciding if you need session history is to put yourself in the place of the model, and ask yourself &#34;Do I have all of the information I need to do what the user wants?&#34;</p>
-<div>
-<h2 id="challenges-and-limitations-of-prompt-engineering">Challenges and limitations of prompt engineering</h2>
-</div>
-<p>While prompt engineering can be useful for improving the accuracy and effectiveness of LLMs inference results, it has substantial challenges and limitations.</p>
-<p>Here we summarize some major challenges when using prompt engineering.</p>
-<ul style="list-style-type: none; list-style-position: inside;"><li style="list-style-type: disc;">Token size limit for prompt input: Most LLMs have a limit on the number of tokens that can be used as input to generate a completion. This limit can be as low as a few dozen tokens. This limit can restrict the amount of context that can be used to generate accurate completions.</li><li style="list-style-type: disc;">Data for prompt engineering are not always available: For example, prompts may require domain-specific knowledge or language that is not commonly used in everyday communication. In such cases, it may be challenging to find suitable data to use for prompt engineering. Additionally, the quality of the data used for prompt engineering affects the quality of the prompts.</li><li style="list-style-type: disc;">Evaluation becomes extremely complex as prompt volume grows: As the number of prompts increases, it becomes more difficult to keep track of the various experiments and to isolate the effect of the prompts on the final output. This tracking difficulty can lead to confusion and make it more challenging to draw meaningful conclusions from the experiments.</li><li style="list-style-type: disc;">Complex prompts add latency and costs: LLMs require time and resources to process and respond to complex prompts. It also adds latency that can slow down the overall process of model development and deployment. More complex prompts also increase the prompt token size in each LLM call, increasing the cost of running experiments.</li><li style="list-style-type: disc;">Small prompt changes can have a large impact: It makes it difficult to predict how the model will behave with even small prompt changes. This can lead to unexpected results. This becomes problematic in applications where accuracy and consistency are critical, such as in automated customer service or medical diagnosis</li></ul>`; // String 
-
+			inputs['context'] = input.context;
 			// Start Asynchronously: Uncomment to run in background. Code snippet will not have access to outputs.
 			// sn_fd.FlowAPI.getRunner().action('x_1234_genai.llm_search').inBackground().withInputs(inputs).run();
 
@@ -276,6 +173,9 @@ move(0, 5, 0, &#34;myCube&#34;)
 			// Get Outputs:
 			// Note: outputs can only be retrieved when executing synchronously.
 			data.ans = outputs['answer']; // String
+
+			// Push the answer to L1 cache
+			sn_scoped_cache.ScopedCacheManager.put("svngenaicache",input.query,data.ans);
 
 		} catch (ex) {
 			var message = ex.getMessage();
@@ -290,14 +190,14 @@ move(0, 5, 0, &#34;myCube&#34;)
         <sys_created_by>svnadmin</sys_created_by>
         <sys_created_on>2024-12-04 15:35:01</sys_created_on>
         <sys_id>c1fb5b8d83da12107f443135afda1e59</sys_id>
-        <sys_mod_count>38</sys_mod_count>
+        <sys_mod_count>67</sys_mod_count>
         <sys_name>LLM Home</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
         <sys_update_name>sp_widget_c1fb5b8d83da12107f443135afda1e59</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-05 14:05:34</sys_updated_on>
+        <sys_updated_on>2024-12-11 13:14:02</sys_updated_on>
         <template><![CDATA[<div class = "from-group">
   <label for = "query" >${Enter your Query}</label>
   <input type = "text" class = "form-control" ng-model = "c.query"/>
@@ -313,7 +213,11 @@ move(0, 5, 0, &#34;myCube&#34;)
   <span id = "answer">
 
   </span>
-
+<br/>
+  <br/>
+  <p ng-if = "c.timeTaken != 0">
+    Time Taken: {{c.timeTaken}}
+  </p>
 </div>]]></template>
     </sp_widget>
 </record_update>

@@ -31,7 +31,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4aa4d34183da12107f443135afda1e23</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>0</sys_mod_count>
         <sys_name>LLM Search</sys_name>
         <sys_overrides/>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
@@ -39,7 +39,7 @@
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
         <sys_update_name>sys_hub_action_type_definition_4aa4d34183da12107f443135afda1e23</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-04 15:33:03</sys_updated_on>
+        <sys_updated_on>2024-12-11 09:00:03</sys_updated_on>
         <system_level>false</system_level>
         <type/>
     </sys_hub_action_type_definition>
@@ -190,18 +190,6 @@
     </sys_variable_value>
     <sys_element_mapping action="delete_multiple" query="id=e0b55f4583da12107f443135afda1e07"/>
     <sys_element_mapping action="INSERT_OR_UPDATE">
-        <field>application</field>
-        <id>e0b55f4583da12107f443135afda1e07</id>
-        <sys_created_by>svnadmin</sys_created_by>
-        <sys_created_on>2024-12-04 15:07:42</sys_created_on>
-        <sys_id>7cb55f4583da12107f443135afda1e1a</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-04 15:07:42</sys_updated_on>
-        <table>var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7</table>
-        <value/>
-    </sys_element_mapping>
-    <sys_element_mapping action="INSERT_OR_UPDATE">
         <field>context</field>
         <id>e0b55f4583da12107f443135afda1e07</id>
         <sys_created_by>svnadmin</sys_created_by>
@@ -224,18 +212,6 @@
         <sys_updated_on>2024-12-04 15:07:42</sys_updated_on>
         <table>var__m_sys_hub_step_ext_input_e0b55f4583da12107f443135afda1e07</table>
         <value>{{action.query}}</value>
-    </sys_element_mapping>
-    <sys_element_mapping action="INSERT_OR_UPDATE">
-        <field>script</field>
-        <id>e0b55f4583da12107f443135afda1e07</id>
-        <sys_created_by>svnadmin</sys_created_by>
-        <sys_created_on>2024-12-04 15:07:42</sys_created_on>
-        <sys_id>34b55f4583da12107f443135afda1e1b</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-04 15:07:42</sys_updated_on>
-        <table>var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7</table>
-        <value/>
     </sys_element_mapping>
     <sys_element_mapping action="delete_multiple" query="table=var__m_sys_hub_step_ext_output_e0b55f4583da12107f443135afda1e07^id=e0b55f4583da12107f443135afda1e07"/>
     <sys_element_mapping action="delete_multiple" query="table=var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7^id=e0b55f4583da12107f443135afda1e07"/>
@@ -506,11 +482,11 @@
         <sys_created_on>2024-12-04 15:07:41</sys_created_on>
         <sys_id>f4b55f4583da12107f443135afda1e16</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Answer</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_step_ext_output_e0b55f4583da12107f443135afda1e07_answer_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:07:41</sys_updated_on>
         <url/>
@@ -973,11 +949,11 @@
         <sys_created_on>2024-12-04 15:03:29</sys_created_on>
         <sys_id>0bb4d70583da12107f443135afda1ed7</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Context</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_input_4aa4d34183da12107f443135afda1e23_context_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:03:29</sys_updated_on>
         <url/>
@@ -996,11 +972,11 @@
         <sys_created_on>2024-12-04 15:03:29</sys_created_on>
         <sys_id>c7b4d70583da12107f443135afda1ed3</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Query</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_input_4aa4d34183da12107f443135afda1e23_query_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:03:29</sys_updated_on>
         <url/>
@@ -1021,11 +997,11 @@
         <sys_created_on>2024-12-04 15:07:42</sys_created_on>
         <sys_id>3cb55f4583da12107f443135afda1e3c</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Answer</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_4aa4d34183da12107f443135afda1e23_answer_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:07:42</sys_updated_on>
         <url/>
@@ -1044,11 +1020,11 @@
         <sys_created_on>2024-12-04 15:03:29</sys_created_on>
         <sys_id>8bb4d70583da12107f443135afda1efd</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Don't Treat as Error</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_4aa4d34183da12107f443135afda1e23___dont_treat_as_error___en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:03:29</sys_updated_on>
         <url/>
@@ -1067,11 +1043,11 @@
         <sys_created_on>2024-12-04 15:03:29</sys_created_on>
         <sys_id>8fb4d70583da12107f443135afda1edd</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Action Status</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_4aa4d34183da12107f443135afda1e23___action_status___en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:03:29</sys_updated_on>
         <url/>
@@ -1082,7 +1058,7 @@
     <sys_hub_action_plan action="INSERT_OR_UPDATE">
         <action_id display_value="LLM Search">4aa4d34183da12107f443135afda1e23</action_id>
         <plan>{"type":"PlanProxy","persistor":{"@class":".ChunkingPlanPersistor","table":"sys_hub_action_plan","id":"948b938d83da12107f443135afda1ec2","name":"plan","plan_signature":null}}</plan>
-        <snapshot>c08b938d83da12107f443135afda1ea0</snapshot>
+        <snapshot>5766461f9f9212107f44cd721524ab2c</snapshot>
         <sys_created_by>svnadmin</sys_created_by>
         <sys_created_on>2024-12-04 15:33:03</sys_created_on>
         <sys_domain>global</sys_domain>
@@ -1281,18 +1257,6 @@
     </sys_variable_value>
     <sys_element_mapping action="delete_multiple" query="id=008b938d83da12107f443135afda1e77"/>
     <sys_element_mapping action="INSERT_OR_UPDATE">
-        <field>application</field>
-        <id>008b938d83da12107f443135afda1e77</id>
-        <sys_created_by>svnadmin</sys_created_by>
-        <sys_created_on>2024-12-04 15:33:02</sys_created_on>
-        <sys_id>008b938d83da12107f443135afda1e89</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
-        <table>var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7</table>
-        <value/>
-    </sys_element_mapping>
-    <sys_element_mapping action="INSERT_OR_UPDATE">
         <field>context</field>
         <id>008b938d83da12107f443135afda1e77</id>
         <sys_created_by>svnadmin</sys_created_by>
@@ -1315,18 +1279,6 @@
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <table>var__m_sys_hub_step_ext_input_008b938d83da12107f443135afda1e77</table>
         <value>{{action.query}}</value>
-    </sys_element_mapping>
-    <sys_element_mapping action="INSERT_OR_UPDATE">
-        <field>script</field>
-        <id>008b938d83da12107f443135afda1e77</id>
-        <sys_created_by>svnadmin</sys_created_by>
-        <sys_created_on>2024-12-04 15:33:02</sys_created_on>
-        <sys_id>c48b938d83da12107f443135afda1e89</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
-        <table>var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7</table>
-        <value/>
     </sys_element_mapping>
     <sys_element_mapping action="delete_multiple" query="table=var__m_sys_hub_step_ext_output_008b938d83da12107f443135afda1e77^id=008b938d83da12107f443135afda1e77"/>
     <sys_element_mapping action="delete_multiple" query="table=var__m_sys_flow_step_definition_input_106afb6647032200b4fad7527c9a71e7^id=008b938d83da12107f443135afda1e77"/>
@@ -1597,11 +1549,11 @@
         <sys_created_on>2024-12-04 15:33:02</sys_created_on>
         <sys_id>408b938d83da12107f443135afda1e85</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Answer</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_step_ext_output_008b938d83da12107f443135afda1e77_answer_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <url/>
@@ -2064,11 +2016,11 @@
         <sys_created_on>2024-12-04 15:33:02</sys_created_on>
         <sys_id>008b938d83da12107f443135afda1e72</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Query</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_input_b37b938d83da12107f443135afda1e69_query_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <url/>
@@ -2087,11 +2039,11 @@
         <sys_created_on>2024-12-04 15:33:02</sys_created_on>
         <sys_id>488b938d83da12107f443135afda1e75</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Context</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_input_b37b938d83da12107f443135afda1e69_context_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <url/>
@@ -2112,11 +2064,11 @@
         <sys_created_on>2024-12-04 15:33:02</sys_created_on>
         <sys_id>488b938d83da12107f443135afda1e95</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Action Status</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_b37b938d83da12107f443135afda1e69___action_status___en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <url/>
@@ -2135,11 +2087,11 @@
         <sys_created_on>2024-12-04 15:33:02</sys_created_on>
         <sys_id>8c8b938d83da12107f443135afda1e91</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Answer</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_b37b938d83da12107f443135afda1e69_answer_en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:02</sys_updated_on>
         <url/>
@@ -2158,11 +2110,11 @@
         <sys_created_on>2024-12-04 15:33:03</sys_created_on>
         <sys_id>8c8b938d83da12107f443135afda1e9a</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name/>
+        <sys_name>Don't Treat as Error</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
-        <sys_update_name/>
+        <sys_update_name>sys_documentation_var__m_sys_hub_action_output_b37b938d83da12107f443135afda1e69___dont_treat_as_error___en</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
         <sys_updated_on>2024-12-04 15:33:03</sys_updated_on>
         <url/>

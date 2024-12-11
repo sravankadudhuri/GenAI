@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scoped_cache">
+    <sys_scoped_cache action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <always_compress>false</always_compress>
+        <cache_name>svngenaicache</cache_name>
+        <cache_name_with_scope>svngenaicache.x_1234_genai</cache_name_with_scope>
+        <max_entries>1000</max_entries>
+        <sys_class_name>sys_scoped_cache</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-11 12:50:59</sys_created_on>
+        <sys_id>1889be139fd612107f44cd721524abb1</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>svngenaicache</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_scoped_cache_1889be139fd612107f44cd721524abb1</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-11 12:51:09</sys_updated_on>
+    </sys_scoped_cache>
+</record_update>
