@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sn_nowassist_skill_config_var_set">
+    <sn_nowassist_skill_config_var_set action="INSERT_OR_UPDATE">
+        <config_type display_value="Skill builder Delivery step">7dfdff5893b64210aa5730f164891837</config_type>
+        <description/>
+        <hide_step>false</hide_step>
+        <name>__delivery_step__</name>
+        <order>100</order>
+        <parent/>
+        <screen_id/>
+        <screen_table>sys_ux_macroponent</screen_table>
+        <skill_config display_value="Text Similarity">fc8e7040f56212107f44806fa872f8fa</skill_config>
+        <step_completed>false</step_completed>
+        <sys_class_name>sn_nowassist_skill_config_var_set</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 14:47:33</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_id>d567a984f52612107f44806fa872f8f2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>__delivery_step__</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sn_nowassist_skill_config_var_set_d567a984f52612107f44806fa872f8f2</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 14:47:33</sys_updated_on>
+        <title/>
+        <vars/>
+    </sn_nowassist_skill_config_var_set>
+    <sys_translated_text action="delete_multiple" query="documentkey=d567a984f52612107f44806fa872f8f2"/>
+    <sys_variable_value action="delete_multiple" query="document_key=d567a984f52612107f44806fa872f8f2"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sn_nowassist_skill_config_var_set</document>
+        <document_key>d567a984f52612107f44806fa872f8f2</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 14:47:33</sys_created_on>
+        <sys_id>a167a984f52612107f44806fa872f8f3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 14:47:33</sys_updated_on>
+        <value>1</value>
+        <variable display_value="Enable UI Action">f09e3f9893b64210aa5730f16489189f</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sn_nowassist_skill_config_var_set</document>
+        <document_key>d567a984f52612107f44806fa872f8f2</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 14:47:33</sys_created_on>
+        <sys_id>ad67a984f52612107f44806fa872f8f3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 14:47:33</sys_updated_on>
+        <value>0</value>
+        <variable display_value="Enable NAP">ab5ef79893b64210aa5730f16489185a</variable>
+    </sys_variable_value>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sn_nowassist_skill_config_var_set</document>
+        <document_key>d567a984f52612107f44806fa872f8f2</document_key>
+        <order>100</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 14:47:33</sys_created_on>
+        <sys_id>e967a984f52612107f44806fa872f8f3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 14:47:33</sys_updated_on>
+        <value>5d67e184f52612107f44806fa872f888</value>
+        <variable display_value="UI Action Id">4fee37d893b64210aa5730f164891896</variable>
+    </sys_variable_value>
+</record_update>

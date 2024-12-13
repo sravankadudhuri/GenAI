@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_one_extend_capability_definition">
+    <sys_one_extend_capability_definition action="INSERT_OR_UPDATE">
+        <advanced>false</advanced>
+        <api>936e514a53b3b110f028ddeeff7b128c</api>
+        <api_type>sys_hub_flow</api_type>
+        <capability display_value="Text Similarity">e88e304cf52212107f44806fa872f83a</capability>
+        <category display_value="Other">04c489f3532121106b38ddeeff7b1215</category>
+        <connection display_value="sn_generative_ai.Now_LLM">4e85d828777721105de60f207b5a9906</connection>
+        <description/>
+        <filter_properties>{"provider":"Now LLM GenericNow LLM Generic"}</filter_properties>
+        <metadata/>
+        <name>Text Similarity</name>
+        <order>0</order>
+        <postprocessor><![CDATA[(function(outputs) {     	/* write code here to transform definition output to capability output.*/     	     	outputs = JSON.parse(outputs);     	     	return outputs;     })(outputs);]]></postprocessor>
+        <preprocessor><![CDATA[(function(inputs) {     	/* write code here to transform capability input to definition input.*/     	     	inputs = JSON.parse(inputs);     	     	return inputs;     })(inputs);]]></preprocessor>
+        <sys_class_name>sys_one_extend_capability_definition</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 11:48:55</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>288e7040f56212107f44806fa872f8a8</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Text Similarity</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_one_extend_capability_definition_288e7040f56212107f44806fa872f8a8</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 11:48:55</sys_updated_on>
+        <truncate_strategy display_value="Default Truncation Strategy">2b99e1137fb20210f465c3b76d86650d</truncate_strategy>
+    </sys_one_extend_capability_definition>
+    <sys_translated_text action="delete_multiple" query="documentkey=288e7040f56212107f44806fa872f8a8"/>
+</record_update>

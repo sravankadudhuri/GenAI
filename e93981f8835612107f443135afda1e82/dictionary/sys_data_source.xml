@@ -10,10 +10,10 @@
             <element name="data_stream_action"/>
         </index>
         <index name="index2">
-            <element name="connection_alias"/>
+            <element name="data_stream_connection_alias"/>
         </index>
         <index name="index3">
-            <element name="data_stream_connection_alias"/>
+            <element name="connection_alias"/>
         </index>
     </element>
 </database>

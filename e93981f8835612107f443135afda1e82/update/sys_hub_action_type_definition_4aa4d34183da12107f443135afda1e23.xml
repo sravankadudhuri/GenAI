@@ -39,7 +39,7 @@
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
         <sys_update_name>sys_hub_action_type_definition_4aa4d34183da12107f443135afda1e23</sys_update_name>
         <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-11 09:00:03</sys_updated_on>
+        <sys_updated_on>2024-12-13 11:46:03</sys_updated_on>
         <system_level>false</system_level>
         <type/>
     </sys_hub_action_type_definition>
@@ -1058,7 +1058,7 @@
     <sys_hub_action_plan action="INSERT_OR_UPDATE">
         <action_id display_value="LLM Search">4aa4d34183da12107f443135afda1e23</action_id>
         <plan>{"type":"PlanProxy","persistor":{"@class":".ChunkingPlanPersistor","table":"sys_hub_action_plan","id":"948b938d83da12107f443135afda1ec2","name":"plan","plan_signature":null}}</plan>
-        <snapshot>5766461f9f9212107f44cd721524ab2c</snapshot>
+        <snapshot>e2a9d904f5e212107f44806fa872f8d1</snapshot>
         <sys_created_by>svnadmin</sys_created_by>
         <sys_created_on>2024-12-04 15:33:03</sys_created_on>
         <sys_domain>global</sys_domain>
