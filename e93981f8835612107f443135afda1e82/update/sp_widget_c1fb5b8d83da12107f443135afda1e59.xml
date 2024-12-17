@@ -8,11 +8,18 @@
 	c.query = "";
 	c.timeTaken = 0;
 	c.startTime = "";
-
+	c.score = 0;
+	var ans = document.getElementById("answer");
+	
+	
 	var converter = new showdown.Converter();
 	//c.html = converter.makeHtml(md);
 
-
+	c.clear = () =>{
+		ans.innerHTML = "";
+		c.score = 0;
+		c.timeTaken = 0;
+	};
 
 	c.llmSearch = (query) => {
 
@@ -89,6 +96,7 @@
 							c.html = converter.makeHtml(res.data.ans);
 							ans.innerHTML = c.html;
 							c.timeTaken = (new Date() - c.startTime) / 1000 + "s";
+							
 
 						});
 
@@ -100,10 +108,11 @@
 
 			}
 			else {
-				var ans = document.getElementById("answer");
+				c.score = answer.data.score;
 				c.html = converter.makeHtml(answer.data.ans);
 				ans.innerHTML = c.html;
 				c.timeTaken = (new Date() - c.startTime) / 1000 + "s";
+				
 			}
 
 		});
@@ -127,28 +136,72 @@
         <option_schema/>
         <public>false</public>
         <roles/>
-        <script><![CDATA[(function() {
+        <script><![CDATA[(function () {
 	/* populate the 'data' object */
 	/* e.g., data.table = $sp.getValue('table'); */
 
 
 	data.ans = "";
 	data.context = "";
-	
-	
-	if(input && input.action == "ansInL1"){
-		data.ans = sn_scoped_cache.ScopedCacheManager.get("svngenaicache",input.query)
+	data.similarQuery = "";
+	data.score = 0;
+	var searchEvent = new global.BuildSuggestionsFromLogTable();
+
+	if (input && input.action == "ansInL1") {
+		
+		var searchGr = new GlideRecord("sys_search_event");
+		searchGr.addEncodedQuery("has_results=true");
+		searchGr.query();
+
+		while (searchGr.next()) {
+			
+			var inputsPayload = {};
+			// query1 is a input of type: string
+			inputsPayload['query1'] = input.query;
+			// query2 is a input of type: string
+			inputsPayload['query2'] = searchGr.getValue("search_query");
+
+			var request = {
+				executionRequests: [{
+					payload: inputsPayload,
+					capabilityId: 'e88e304cf52212107f44806fa872f83a',
+					meta: {
+						skillConfigId: 'fc8e7040f56212107f44806fa872f8fa'
+					}
+				}],
+				mode: 'sync'
+			};
+
+			try {
+				var resp = (sn_one_extend.OneExtendUtil.execute(request));
+				var score = JSON.parse(resp["capabilities"]["e88e304cf52212107f44806fa872f83a"]["response"]).model_output.split("\n")[0];
+				data.score = score;
+				if (score >= 60) {
+					data.similarQuery = searchGr.getValue("search_query");
+					
+					data.ans = sn_scoped_cache.ScopedCacheManager.get("svngenaicache", data.similarQuery);
+					if (data.ans) {
+						searchEvent._insertSearchEvents("x_1234_genai", "GenAi", input.query, gs.getUserID(), gs.getSessionID(), true, gs.getSession().getLanguage());
+					}
+					break;
+				}
+			} catch (e) {
+				gs.error(e);
+				gs.addErrorMessage('Something went wrong while executing skill Text Similarity' + e.getMessage());
+			}
+
+		}
 	}
 
 
-	if(input && input.action == "getContext"){
-		input.kbNums.forEach(function(kbNum){
+	if (input && input.action == "getContext") {
+		input.kbNums.forEach(function (kbNum) {
 			var kbGr = new GlideRecord("kb_knowledge");
-			kbGr.addQuery("latest=true^workflow_state=published^sys_class_name=kb_knowledge^number="+kbNum);
+			kbGr.addQuery("latest=true^workflow_state=published^sys_class_name=kb_knowledge^number=" + kbNum);
 			kbGr.setLimit(2);
 			kbGr.query();
 
-			while(kbGr.next()){
+			while (kbGr.next()) {
 				data.context += kbGr.getValue("text");
 			}
 
@@ -157,7 +210,7 @@
 
 
 
-	if(input && input.action === "llmSearch"){
+	if (input && input.action === "llmSearch") {
 
 		try {
 			var inputs = {};
@@ -173,13 +226,13 @@
 			// Get Outputs:
 			// Note: outputs can only be retrieved when executing synchronously.
 			data.ans = outputs['answer']; // String
-
+			searchEvent._insertSearchEvents("x_1234_genai", "GenAi", input.query, gs.getUserID(), gs.getSessionID(), true, gs.getSession().getLanguage());
 			// Push the answer to L1 cache
-			sn_scoped_cache.ScopedCacheManager.put("svngenaicache",input.query,data.ans);
+			sn_scoped_cache.ScopedCacheManager.put("svngenaicache", input.query, data.ans);
 
 		} catch (ex) {
 			var message = ex.getMessage();
-			gs.error(message);
+			gs.addErrorMessage('Something went wrong while executing skill - generate answer' + ex.getMessage());
 		}
 
 
@@ -190,17 +243,17 @@
         <sys_created_by>svnadmin</sys_created_by>
         <sys_created_on>2024-12-04 15:35:01</sys_created_on>
         <sys_id>c1fb5b8d83da12107f443135afda1e59</sys_id>
-        <sys_mod_count>67</sys_mod_count>
+        <sys_mod_count>91</sys_mod_count>
         <sys_name>LLM Home</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
         <sys_update_name>sp_widget_c1fb5b8d83da12107f443135afda1e59</sys_update_name>
-        <sys_updated_by>svnadmin</sys_updated_by>
-        <sys_updated_on>2024-12-11 13:14:02</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2024-12-17 13:32:07</sys_updated_on>
         <template><![CDATA[<div class = "from-group">
   <label for = "query" >${Enter your Query}</label>
-  <input type = "text" class = "form-control" ng-model = "c.query"/>
+  <input type = "text" class = "form-control" ng-model = "c.query" ng-change = "c.clear()"/>
   <br/>
   <button class = "btn btn-primary" ng-click = "c.llmSearch(c.query)">
     ${Submit}
@@ -218,6 +271,9 @@
   <p ng-if = "c.timeTaken != 0">
     Time Taken: {{c.timeTaken}}
   </p>
+  <br/>
+  <br/>
+  <p ng-if = "c.score != 0 ">Score :{{c.score}}</p>
 </div>]]></template>
     </sp_widget>
 </record_update>

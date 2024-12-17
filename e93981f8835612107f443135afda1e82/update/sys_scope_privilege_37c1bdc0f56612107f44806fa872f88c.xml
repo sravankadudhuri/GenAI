@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_scope_privilege">
+    <sys_scope_privilege action="INSERT_OR_UPDATE">
+        <operation>read</operation>
+        <source_scope display_value="GenAI">e93981f8835612107f443135afda1e82</source_scope>
+        <status>allowed</status>
+        <sys_class_name>sys_scope_privilege</sys_class_name>
+        <sys_created_by>svnadmin</sys_created_by>
+        <sys_created_on>2024-12-13 15:33:03</sys_created_on>
+        <sys_id>37c1bdc0f56612107f44806fa872f88c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>sys_search_event</sys_name>
+        <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
+        <sys_update_name>sys_scope_privilege_37c1bdc0f56612107f44806fa872f88c</sys_update_name>
+        <sys_updated_by>svnadmin</sys_updated_by>
+        <sys_updated_on>2024-12-13 15:33:03</sys_updated_on>
+        <target_name>sys_search_event</target_name>
+        <target_scope display_value="Global">global</target_scope>
+        <target_type>sys_db_object</target_type>
+    </sys_scope_privilege>
+</record_update>
