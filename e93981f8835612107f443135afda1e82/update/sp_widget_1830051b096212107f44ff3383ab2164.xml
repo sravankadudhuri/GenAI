@@ -2,17 +2,22 @@
     <sp_widget action="INSERT_OR_UPDATE">
         <category>custom</category>
         <client_script><![CDATA[api.controller=function() {
-  /* widget controller */
-  
+/* widget controller */
+
 let c = this;
-  
+
+const a1 = 10;
+const a2 = 20;
+
+console.log(`sum: ${a1 + a2}`)
+
 c.authorList = Object.groupBy(c.data.arts,function({author}){
 return author;
 })
 
 
 for(let [su,sd] of Object.entries(c.authorList)){
-console.log(sd)
+//console.log(sd)
 }
 
 
@@ -20,12 +25,19 @@ console.log(sd)
 let a = [1,2,3,4,5];
 
 let ans = a.reduce((accumulator, currentValue) => accumulator + currentValue);
-console.log(ans);
+//console.log(ans);
 
+let asc1 = () =>{
+fetch("https://fake-json-api.mock.beeceptor.com/users",{"content-type":"aplication/json"}).then((resp) => {
+console.log(resp.status)
+}).catch((err) => {console.log("svnerr "+err)})
+}
 
+let asCall = async() =>{
+await asc1();
+}
 
-
-
+asCall();
 };
 
 ]]></client_script>
@@ -49,16 +61,19 @@ console.log(ans);
 /* e.g., data.table = $sp.getValue('table'); */
 
 data.arts = [];
+var msg = "hello";
+
+gs.addInfoMessage(`${msg} JS`)
 
 class KbUtils {
-TABLE_NAME = ""
+
 constructor() {
   this.limit = 50,
   this.TABLE_NAME = "kb_knowledge"
 }
 
 getKbArticles = () => {
-  gs.addInfoMessage(this.TABLE_NAME)
+ // gs.addInfoMessage(this.TABLE_NAME)
   let kbGr = new GlideRecord(this.TABLE_NAME);
   kbGr.setLimit(this.limit);
   kbGr.addEncodedQuery("workflow_state=published");
@@ -74,17 +89,30 @@ getKbArticles = () => {
 
 }
 
+infoSuper = () =>{
+  gs.addInfoMessage("inside Super class infor")
+}
 }
 
-class KbUtils2 extends KbUtils{
-  info = () =>{
-    gs.addInfoMessage(`From child: `,+TABLE_NAME);
+let KbUtils3 = Class.create();
+KbUtils3.prototype = {
+  info3 : () =>{
+    gs.addInfoMessage("info3")
   }
-}
+};
 
-new KbUtils2().getKbArticles();
-new KbUtils2().info();
-//gs.addInfoMessage(JSON.stringify(data.arts))
+
+let kbUtils2 = Class.create();
+kbUtils2.prototype = Object.extendsObject(KbUtils3,{
+  message : "Created class via Object",
+  info : () =>{
+    gs.addInfoMessage("inside method")
+  }
+})
+
+//new kbUtils2().info3()
+
+//new KbUtils().getKbArticles();
 })();
 ]]></script>
         <servicenow>false</servicenow>
@@ -92,14 +120,14 @@ new KbUtils2().info();
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2024-12-23 14:16:30</sys_created_on>
         <sys_id>1830051b096212107f44ff3383ab2164</sys_id>
-        <sys_mod_count>134</sys_mod_count>
+        <sys_mod_count>200</sys_mod_count>
         <sys_name>test</sys_name>
         <sys_package display_value="GenAI" source="x_1234_genai">e93981f8835612107f443135afda1e82</sys_package>
         <sys_policy/>
         <sys_scope display_value="GenAI">e93981f8835612107f443135afda1e82</sys_scope>
         <sys_update_name>sp_widget_1830051b096212107f44ff3383ab2164</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2024-12-24 15:49:24</sys_updated_on>
+        <sys_updated_on>2024-12-25 07:29:17</sys_updated_on>
         <template><![CDATA[<div>
 <!-- your widget template -->
  hello 
